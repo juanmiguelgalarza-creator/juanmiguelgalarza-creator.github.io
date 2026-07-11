@@ -1,0 +1,409 @@
+---
+import { t } from '../i18n/ui';
+import type { Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = t(locale);
+
+const examplesEs = [
+  {
+    q: '¿Qué requisitos necesito para constituir una empresa en Ecuador?',
+    summary:
+      'Para constituir una compañía se requiere, entre otros pasos, reserva de denominación, elaboración de estatutos, apertura de cuenta de integración de capital y aprobación de la Superintendencia de Compañías, Valores y Seguros.',
+    citations: [
+      { source: 'Ley de Compañías', article: 'Art. 136', snippet: 'La compañía se constituirá mediante escritura pública que será aprobada por el Superintendente de Compañías.' },
+      { source: 'Ley de Compañías', article: 'Art. 146', snippet: 'La escritura de constitución contendrá el nombre, domicilio, objeto social y capital de la compañía.' },
+    ],
+  },
+  {
+    q: '¿Cuáles son mis derechos como arrendatario si el propietario quiere terminar el contrato antes de tiempo?',
+    summary:
+      'El arrendador solo puede dar por terminado el contrato antes de su vencimiento en las causales expresamente previstas por la ley, y debe notificar al arrendatario con la anticipación establecida.',
+    citations: [
+      { source: 'Código Civil', article: 'Art. 1907', snippet: 'El contrato de arrendamiento termina por las causales que la ley establece, no por sola voluntad de una de las partes.' },
+    ],
+  },
+  {
+    q: '¿Qué dice la ley sobre el teletrabajo?',
+    summary:
+      'El teletrabajo debe pactarse por escrito entre empleador y trabajador, y el trabajador conserva los mismos derechos laborales que bajo la modalidad presencial.',
+    citations: [
+      { source: 'Código del Trabajo', article: 'Art. 16.1', snippet: 'El teletrabajo es una forma de organización laboral que se realiza fuera del establecimiento del empleador, mediante el uso de tecnologías de la información.' },
+    ],
+  },
+];
+
+const examplesEn = [
+  {
+    q: 'What do I need to incorporate a company in Ecuador?',
+    summary:
+      'Incorporating a company requires, among other steps, a name reservation, drafting the bylaws, opening a capital contribution account, and approval from the Superintendency of Companies.',
+    citations: [
+      { source: 'Companies Act', article: 'Art. 136', snippet: 'The company shall be incorporated by public deed, approved by the Superintendent of Companies.' },
+      { source: 'Companies Act', article: 'Art. 146', snippet: 'The incorporation deed shall contain the name, domicile, corporate purpose, and capital of the company.' },
+    ],
+  },
+  {
+    q: 'What are my rights as a tenant if the landlord wants to end the lease early?',
+    summary:
+      'A landlord may only terminate a lease before its term under the grounds expressly set by law, and must notify the tenant with the legally required notice period.',
+    citations: [
+      { source: 'Civil Code', article: 'Art. 1907', snippet: 'A lease agreement ends only on the grounds established by law, not by the sole will of one party.' },
+    ],
+  },
+  {
+    q: 'What does the law say about remote work?',
+    summary:
+      'Remote work must be agreed in writing between employer and employee, and the employee retains the same labor rights as under in-person work.',
+    citations: [
+      { source: 'Labor Code', article: 'Art. 16.1', snippet: 'Remote work is a form of labor organization carried out outside the employer\'s premises, using information technologies.' },
+    ],
+  },
+];
+
+const examples = locale === 'en' ? examplesEn : examplesEs;
+const fallback =
+  locale === 'en'
+    ? "This demo only covers the example questions above. Try one of them to see the full response format with citations."
+    : 'Esta demo solo cubre las preguntas de ejemplo de arriba. Prueba una de ellas para ver el formato completo de respuesta con citas.';
+---
+
+<section class="lexis-demo container" aria-labelledby="lexis-demo-title" data-lexis-demo data-fallback={fallback}>
+  <div class="lexis-demo__intro" data-reveal>
+    <h2 id="lexis-demo-title" class="label" style="color: var(--accent)">{strings.lexis_demo_title}</h2>
+    <p>{strings.lexis_demo_intro}</p>
+  </div>
+
+  <div class="lexis-demo__panel">
+    <div class="lexis-demo__chips" role="list">
+      {examples.map((ex, i) => (
+        <button type="button" class="lexis-demo__chip" data-question={i}>{ex.q}</button>
+      ))}
+    </div>
+
+    <form class="lexis-demo__form" data-lexis-form>
+      <input
+        type="text"
+        name="question"
+        class="lexis-demo__input mono"
+        placeholder={strings.lexis_demo_placeholder}
+        aria-label={strings.lexis_demo_placeholder}
+      />
+      <button type="submit" class="lexis-demo__submit mono">{strings.lexis_demo_submit}</button>
+    </form>
+
+    <div class="lexis-demo__output" data-lexis-output aria-live="polite"></div>
+
+    <p class="lexis-demo__disclaimer">{strings.lexis_demo_disclaimer}</p>
+  </div>
+</section>
+
+<template data-lexis-thinking-template>
+  <div class="lexis-demo__thinking">
+    <span class="lexis-demo__dot"></span>
+    <span class="lexis-demo__dot"></span>
+    <span class="lexis-demo__dot"></span>
+    <span class="lexis-demo__thinking-label mono"></span>
+  </div>
+</template>
+
+<template data-lexis-response-template>
+  <div class="lexis-demo__response">
+    <p class="lexis-demo__summary"></p>
+    <ul class="lexis-demo__citations"></ul>
+  </div>
+</template>
+
+<style>
+  .lexis-demo {
+    max-width: 68rem;
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+  }
+
+  .lexis-demo__intro p {
+    color: var(--muted);
+    max-width: 62ch;
+    margin-top: var(--space-1);
+  }
+
+  .lexis-demo__panel {
+    margin-top: var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: var(--space-3);
+  }
+
+  .lexis-demo__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-bottom: var(--space-2);
+  }
+
+  .lexis-demo__chip {
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 0.4rem 0.7rem;
+    border-radius: var(--radius);
+    text-align: left;
+    transition: border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  }
+
+  .lexis-demo__chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .lexis-demo__form {
+    display: flex;
+    gap: var(--space-1);
+  }
+
+  .lexis-demo__input {
+    flex: 1;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: var(--text-sm);
+  }
+
+  .lexis-demo__submit {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.75rem 1.2rem;
+    border-radius: var(--radius);
+    font-size: var(--text-sm);
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .lexis-demo__submit:hover {
+    opacity: 0.85;
+  }
+
+  .lexis-demo__output {
+    margin-top: var(--space-3);
+    min-height: 1px;
+  }
+
+  .lexis-demo__thinking {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: var(--text-xs);
+  }
+
+  .lexis-demo__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: lexis-pulse 1s var(--ease-out) infinite;
+  }
+
+  .lexis-demo__dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .lexis-demo__dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes lexis-pulse {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(0.85);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .lexis-demo__response {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(6px);
+    transition:
+      opacity var(--duration-enter) var(--ease-out),
+      transform var(--duration-enter) var(--ease-out),
+      filter var(--duration-enter) var(--ease-out);
+  }
+
+  .lexis-demo__response.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .lexis-demo__summary {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-2);
+  }
+
+  .lexis-demo__citations {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .lexis-demo__citation {
+    border-left: 3px solid var(--indigo);
+    background: var(--bg);
+    padding: 0.6rem 0.8rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+  }
+
+  .lexis-demo__citation.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .lexis-demo__citation-source {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--indigo);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  :root[data-theme='dark'] .lexis-demo__citation-source {
+    color: var(--coral);
+  }
+
+  .lexis-demo__citation-snippet {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .lexis-demo__fallback {
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+
+  .lexis-demo__disclaimer {
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>
+
+<script is:inline define:vars={{ examples, fallback, strings: { thinking: strings.lexis_demo_thinking } }}>
+  (function () {
+    const root = document.querySelector('[data-lexis-demo]');
+    if (!root) return;
+
+    const form = root.querySelector('[data-lexis-form]');
+    const input = form.querySelector('input');
+    const output = root.querySelector('[data-lexis-output]');
+    const chips = root.querySelectorAll('.lexis-demo__chip');
+    const thinkingTpl = document.querySelector('[data-lexis-thinking-template]');
+    const responseTpl = document.querySelector('[data-lexis-response-template]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function clearOutput() {
+      output.innerHTML = '';
+    }
+
+    function findMatch(value) {
+      const idx = chips.length
+        ? Array.from(chips).findIndex((c) => c.textContent.trim() === value.trim())
+        : -1;
+      if (idx >= 0) return examples[idx];
+      return examples.find((ex) => ex.q.trim().toLowerCase() === value.trim().toLowerCase()) || null;
+    }
+
+    function renderFallback() {
+      clearOutput();
+      const p = document.createElement('p');
+      p.className = 'lexis-demo__fallback';
+      p.textContent = fallback;
+      output.appendChild(p);
+    }
+
+    function renderResponse(entry) {
+      clearOutput();
+      const node = responseTpl.content.cloneNode(true);
+      const summary = node.querySelector('.lexis-demo__summary');
+      const list = node.querySelector('.lexis-demo__citations');
+      summary.textContent = entry.summary;
+
+      entry.citations.forEach((c) => {
+        const li = document.createElement('li');
+        li.className = 'lexis-demo__citation';
+        const src = document.createElement('span');
+        src.className = 'lexis-demo__citation-source';
+        src.textContent = c.source + ' — ' + c.article;
+        const snippet = document.createElement('p');
+        snippet.className = 'lexis-demo__citation-snippet';
+        snippet.textContent = c.snippet;
+        li.appendChild(src);
+        li.appendChild(snippet);
+        list.appendChild(li);
+      });
+
+      output.appendChild(node);
+      const responseEl = output.querySelector('.lexis-demo__response');
+      const citationEls = output.querySelectorAll('.lexis-demo__citation');
+
+      requestAnimationFrame(function () {
+        responseEl.classList.add('is-visible');
+        citationEls.forEach(function (el, i) {
+          const delay = reducedMotion ? 0 : i * 90 + 150;
+          setTimeout(function () {
+            el.classList.add('is-visible');
+          }, delay);
+        });
+      });
+    }
+
+    function ask(question) {
+      clearOutput();
+      const thinkingNode = thinkingTpl.content.cloneNode(true);
+      thinkingNode.querySelector('.lexis-demo__thinking-label').textContent = strings.thinking;
+      output.appendChild(thinkingNode);
+
+      const delay = reducedMotion ? 0 : 650;
+      setTimeout(function () {
+        const match = findMatch(question);
+        if (match) {
+          renderResponse(match);
+        } else {
+          renderFallback();
+        }
+      }, delay);
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        input.value = chip.textContent.trim();
+        ask(chip.textContent.trim());
+      });
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const value = input.value.trim();
+      if (!value) return;
+      ask(value);
+    });
+  })();
+</script>

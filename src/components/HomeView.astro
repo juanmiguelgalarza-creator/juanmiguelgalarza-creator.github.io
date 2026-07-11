@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectIndexItem from './ProjectIndexItem.astro';
+import OtherWorkItem from './OtherWorkItem.astro';
+import { t, workPath } from '../i18n/ui';
+import type { Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = t(locale);
+
+const entries = await getCollection('projects', ({ id }) => id.startsWith(`${locale}/`));
+const projects = entries.filter((e) => e.data.kind !== 'other').sort((a, b) => a.data.order - b.data.order);
+const otherWork = entries.filter((e) => e.data.kind === 'other').sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  locale={locale}
+  title="Juan Miguel Galarza — Product Designer"
+  description={strings.home_intro}
+>
+  <section class="hero container">
+    <div class="hero__shape" aria-hidden="true"></div>
+    <div class="hero__grid">
+      <div class="hero__lede">
+        <p class="label hero__kicker" style="color: var(--accent)">{strings.home_kicker}</p>
+        <h1 class="hero__headline">{strings.home_headline}</h1>
+      </div>
+      <p class="hero__intro">{strings.home_intro}</p>
+    </div>
+  </section>
+
+  <section class="index-list container" aria-label={strings.index_label}>
+    <p class="label index-list__label">{strings.index_label}</p>
+    {projects.map((project) => (
+      <ProjectIndexItem
+        locale={locale}
+        href={workPath(locale, project.data.slug)}
+        order={project.data.order}
+        category={project.data.category}
+        title={project.data.title}
+        thesis={project.data.thesis}
+        status={project.data.status}
+      />
+    ))}
+  </section>
+
+  {otherWork.length > 0 && (
+    <section class="other-work container" aria-label={strings.other_work_label}>
+      <p class="label other-work__label">{strings.other_work_label}</p>
+      {otherWork.map((project, index) => (
+        <OtherWorkItem
+          href={workPath(locale, project.data.slug)}
+          initials={project.data.initials ?? project.data.title.slice(0, 2).toUpperCase()}
+          category={project.data.category}
+          title={project.data.title}
+          thesis={project.data.thesis}
+          index={index}
+        />
+      ))}
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: var(--space-7) var(--space-6);
+    overflow: visible;
+  }
+
+  .hero__shape {
+    position: absolute;
+    top: -1.5rem;
+    right: -2.5rem;
+    width: 9rem;
+    height: 9rem;
+    background: var(--indigo);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.95;
+  }
+
+  @media (min-width: 768px) {
+    .hero__shape {
+      width: 15rem;
+      height: 15rem;
+      top: -3rem;
+      right: -4rem;
+    }
+  }
+
+  .hero__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 900px) {
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      column-gap: var(--space-5);
+      align-items: end;
+    }
+  }
+
+  .hero__kicker {
+    margin-bottom: var(--space-2);
+  }
+
+  .hero__headline {
+    font-size: var(--text-4xl);
+    max-width: 14ch;
+  }
+
+  .hero__intro {
+    font-size: var(--text-lg);
+    color: var(--muted);
+    max-width: 34ch;
+  }
+
+  @media (min-width: 900px) {
+    .hero__intro {
+      padding-bottom: var(--space-1);
+    }
+  }
+
+  .index-list {
+    padding-bottom: var(--space-7);
+  }
+
+  .index-list__label {
+    color: var(--accent);
+    margin-bottom: var(--space-1);
+  }
+
+  .other-work {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-7);
+    margin-top: var(--space-2);
+    border-top: 1px dashed var(--border);
+  }
+
+  .other-work__label {
+    color: var(--accent);
+    margin-bottom: var(--space-1);
+  }
+</style>

@@ -1,0 +1,179 @@
+---
+import { t } from '../i18n/ui';
+import type { Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  href: string;
+  order: number;
+  category: string;
+  title: string;
+  thesis: string;
+  status: 'complete' | 'coming-soon';
+}
+
+const { locale, href, order, category, title, thesis, status } = Astro.props;
+const strings = t(locale);
+const tone = order % 2 === 0 ? 'indigo' : 'coral';
+---
+
+<a class={`project-item project-item--${tone}`} href={href}>
+  <span class="project-item__index" aria-hidden="true">{String(order).padStart(2, '0')}</span>
+  <span class="project-item__body">
+    <span class="label project-item__category">{category}</span>
+    <span class="project-item__title">{title}</span>
+    <span class="project-item__thesis">{thesis}</span>
+    {status === 'coming-soon' && <span class="label project-item__soon">{strings.coming_soon}</span>}
+  </span>
+  <span class="project-item__arrow" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .project-item {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+    padding-inline: var(--space-2);
+    margin-inline: calc(var(--space-2) * -1);
+    text-decoration: none;
+    color: var(--fg);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .project-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-base) var(--ease-out);
+    z-index: -1;
+  }
+
+  .project-item--coral::before {
+    background: var(--coral);
+  }
+
+  .project-item--indigo::before {
+    background: var(--indigo);
+  }
+
+  .project-item:hover::before,
+  .project-item:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .project-item:hover .project-item__arrow,
+  .project-item:focus-visible .project-item__arrow {
+    transform: translateX(4px);
+  }
+
+  .project-item--coral:hover .project-item__index,
+  .project-item--coral:hover .project-item__category,
+  .project-item--coral:hover .project-item__title,
+  .project-item--coral:hover .project-item__arrow,
+  .project-item--coral:focus-visible .project-item__index,
+  .project-item--coral:focus-visible .project-item__category,
+  .project-item--coral:focus-visible .project-item__title,
+  .project-item--coral:focus-visible .project-item__arrow {
+    color: var(--navy);
+  }
+
+  .project-item--coral:hover .project-item__thesis,
+  .project-item--coral:focus-visible .project-item__thesis {
+    color: rgb(30 43 60 / 75%);
+  }
+
+  .project-item--indigo:hover .project-item__index,
+  .project-item--indigo:hover .project-item__category,
+  .project-item--indigo:hover .project-item__title,
+  .project-item--indigo:hover .project-item__arrow,
+  .project-item--indigo:focus-visible .project-item__index,
+  .project-item--indigo:focus-visible .project-item__category,
+  .project-item--indigo:focus-visible .project-item__title,
+  .project-item--indigo:focus-visible .project-item__arrow {
+    color: var(--cream);
+  }
+
+  .project-item--indigo:hover .project-item__thesis,
+  .project-item--indigo:focus-visible .project-item__thesis {
+    color: rgb(247 244 236 / 78%);
+  }
+
+  .project-item--coral .project-item__index {
+    color: var(--coral);
+  }
+
+  .project-item--indigo .project-item__index {
+    color: var(--indigo);
+  }
+
+  .project-item__index {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-index-sm);
+    line-height: 0.85;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .project-item__body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .project-item__category {
+    color: var(--accent);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .project-item__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--heading);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .project-item__thesis {
+    color: var(--muted);
+    font-size: var(--text-sm);
+    max-width: 60ch;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .project-item__soon {
+    color: var(--muted);
+  }
+
+  .project-item__arrow {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    color: var(--accent);
+    transition: transform var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .project-item__arrow {
+      display: block;
+    }
+  }
+</style>

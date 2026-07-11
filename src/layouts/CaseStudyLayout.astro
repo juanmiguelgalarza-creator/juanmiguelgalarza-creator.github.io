@@ -1,0 +1,315 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import WorkBlock from '../components/WorkBlock.astro';
+import { t, workPath } from '../i18n/ui';
+import type { Locale } from '../i18n/ui';
+import { render, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<'projects'>;
+  nextTitle?: string;
+}
+
+const { locale, entry, nextTitle } = Astro.props;
+const { data } = entry;
+const strings = t(locale);
+const { Content } = await render(entry);
+const isOther = data.kind === 'other';
+const tone = isOther ? 'neutral' : data.order % 2 === 0 ? 'indigo' : 'coral';
+---
+
+<BaseLayout locale={locale} title={`${data.title} — Juan Miguel Galarza`} description={data.thesis}>
+  <article class="case-study">
+    <header class:list={['case-header', 'container', { 'case-header--other': isOther }]}>
+      <div class="case-header__grid">
+        {!isOther && (
+          <div class={`case-header__number tone-${tone}`} aria-hidden="true">
+            <span>{String(data.order).padStart(2, '0')}</span>
+          </div>
+        )}
+        <div class="case-header__content">
+          <p class="label case-header__category">{isOther ? strings.other_work_label : data.category}</p>
+          <h1 class="case-header__title">{data.title}</h1>
+          <p class="case-header__thesis">{data.thesis}</p>
+          <dl class="case-header__meta mono">
+            <div>
+              <dt>{strings.role_label}</dt>
+              <dd>{data.role}</dd>
+            </div>
+            <div>
+              <dt>{strings.dates_label}</dt>
+              <dd>{data.dates}</dd>
+            </div>
+            {data.scope && (
+              <div>
+                <dt>{strings.scope_label}</dt>
+                <dd>{data.scope}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+      </div>
+    </header>
+
+    {data.heroImage && (
+      <div class:list={['case-hero', `case-hero--${tone}`, 'container', { 'case-hero--narrow': data.heroImageNarrow }]} data-reveal>
+        <img src={data.heroImage} alt={`${data.title} hero`} loading="eager" />
+      </div>
+    )}
+
+    <div class="case-body container">
+      <Content />
+    </div>
+
+    {data.work.length > 0 && (
+      <section class="case-work container" aria-label={strings.work_label}>
+        <h2 class="label case-work__label">{strings.work_label}</h2>
+        {data.work.map((block) => <WorkBlock {...block} tone={tone} />)}
+      </section>
+    )}
+
+    <slot name="interactive" />
+
+    <section class="case-closing container">
+      <div class="case-closing__block" data-reveal>
+        <h2 class="label" style="color: var(--accent)">{strings.result_label}</h2>
+        <p set:html={data.result.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')} />
+      </div>
+      <div class="case-closing__block" data-reveal>
+        <h2 class="label" style="color: var(--accent)">{strings.lesson_label}</h2>
+        <p set:html={data.lesson.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')} />
+      </div>
+    </section>
+
+    {data.nextSlug && (
+      <a class="case-next container" href={workPath(locale, data.nextSlug)}>
+        <span class="label">{strings.next_label}</span>
+        <span class="case-next__row">
+          <span class="case-next__title mono">{nextTitle}</span>
+          <span class="case-next__triangle" aria-hidden="true"></span>
+        </span>
+      </a>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .case-header {
+    padding-block: var(--space-6) var(--space-4);
+    max-width: 68rem;
+  }
+
+  .case-header__grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 900px) {
+    .case-header__grid {
+      flex-direction: row;
+      align-items: stretch;
+      gap: var(--space-5);
+    }
+  }
+
+  .case-header__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3);
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius);
+  }
+
+  .case-header__number span {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-index-sm);
+    line-height: 0.85;
+  }
+
+  @media (min-width: 900px) {
+    .case-header__number {
+      flex-shrink: 0;
+      width: 12rem;
+      margin-bottom: 0;
+    }
+
+    .case-header__number span {
+      font-size: var(--text-index);
+    }
+  }
+
+  .case-header__content {
+    min-width: 0;
+    max-width: 42rem;
+  }
+
+  .case-header__category {
+    color: var(--accent);
+    margin-bottom: var(--space-1);
+  }
+
+  .case-header--other .case-header__category {
+    color: var(--muted);
+  }
+
+  .case-header__title {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .case-header__thesis {
+    font-size: var(--text-xl);
+    color: var(--muted);
+    max-width: 42ch;
+    margin-bottom: var(--space-4);
+  }
+
+  .case-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    font-size: var(--text-xs);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .case-header__meta dt {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .case-header__meta dd {
+    margin: 0.15rem 0 0;
+    color: var(--fg);
+  }
+
+  .case-hero {
+    max-width: 68rem;
+    margin-bottom: var(--space-6);
+    border-top: 4px solid;
+  }
+
+  .case-hero--coral {
+    border-color: var(--coral);
+  }
+
+  .case-hero--indigo {
+    border-color: var(--indigo);
+  }
+
+  .case-hero--neutral {
+    border-color: var(--border);
+  }
+
+  @media (min-width: 900px) {
+    .case-hero--narrow {
+      /* Matches the width of one column in the two-up work-block gallery below. */
+      max-width: min(30.25rem, calc(50vw - 3.75rem));
+    }
+  }
+
+  .case-hero img {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-top: none;
+  }
+
+  .case-body {
+    max-width: 60rem;
+    font-size: var(--text-lg);
+  }
+
+  .case-body :global(h2) {
+    font-size: var(--text-xl);
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+  }
+
+  .case-body :global(p) {
+    color: var(--fg);
+  }
+
+  .case-work {
+    max-width: 68rem;
+    margin-top: var(--space-6);
+  }
+
+  .case-work__label {
+    color: var(--accent);
+    margin-bottom: var(--space-2);
+  }
+
+  .case-closing {
+    max-width: 68rem;
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .case-closing {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .case-closing__block h2 {
+    margin-bottom: var(--space-2);
+  }
+
+  .case-closing__block p {
+    font-size: var(--text-lg);
+    max-width: 52ch;
+  }
+
+  .case-next {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    max-width: 68rem;
+    margin-top: var(--space-6);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  .case-next .label {
+    color: var(--muted);
+  }
+
+  .case-next__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .case-next__title {
+    font-size: var(--text-2xl);
+    color: var(--heading);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .case-next__triangle {
+    width: 0;
+    height: 0;
+    flex-shrink: 0;
+    border-top: 0.6rem solid transparent;
+    border-bottom: 0.6rem solid transparent;
+    border-left: 0.9rem solid var(--accent);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .case-next:hover .case-next__title {
+    color: var(--accent);
+  }
+
+  .case-next:hover .case-next__triangle {
+    transform: translateX(6px);
+  }
+</style>

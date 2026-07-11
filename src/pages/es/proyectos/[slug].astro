@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import CaseStudyLayout from '../../../layouts/CaseStudyLayout.astro';
+import LexisDemo from '../../../components/LexisDemo.astro';
+import QuoreBrandSystem from '../../../components/QuoreBrandSystem.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('projects', ({ id }) => id.startsWith('es/'));
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry, allEntries: entries },
+  }));
+}
+
+const { entry, allEntries } = Astro.props;
+const nextEntry = entry.data.nextSlug
+  ? allEntries.find((e) => e.data.slug === entry.data.nextSlug)
+  : undefined;
+---
+
+<CaseStudyLayout locale="es" entry={entry} nextTitle={nextEntry?.data.title}>
+  {entry.data.slug === 'lexis' && (
+    <Fragment slot="interactive">
+      <LexisDemo locale="es" />
+    </Fragment>
+  )}
+  {entry.data.slug === 'quore' && (
+    <Fragment slot="interactive">
+      <QuoreBrandSystem locale="es" />
+    </Fragment>
+  )}
+</CaseStudyLayout>

@@ -1,0 +1,133 @@
+---
+interface WorkImage {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  section?: string;
+  text?: string;
+  highlight?: string;
+  images: WorkImage[];
+  tone?: 'coral' | 'indigo' | 'neutral';
+}
+
+const { section, text, highlight, images, tone = 'coral' } = Astro.props;
+
+function renderInline(input: string) {
+  // Minimal, controlled markdown: **bold** and [label](url) only.
+  const withLinks = input.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2">$1</a>'
+  );
+  return withLinks.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}
+---
+
+<div class="work-block">
+  {section && <h3 class="work-block__section">{section}</h3>}
+  {text &&
+    text
+      .split('\n\n')
+      .map((paragraph) => <p class="work-block__text" set:html={renderInline(paragraph)} />)}
+  {highlight && (
+    <p class={`work-block__highlight work-block__highlight--${tone} mono`} set:html={renderInline(highlight)} />
+  )}
+
+  {images.length > 0 && (
+    <div class:list={['work-block__gallery', { 'work-block__gallery--single': images.length === 1 }]}>
+      {images.map((img) => (
+        <figure class={`work-block__figure work-block__figure--${tone}`} data-reveal>
+          <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+          {img.caption && <figcaption>{img.caption}</figcaption>}
+        </figure>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .work-block {
+    padding-block: var(--space-4);
+  }
+
+  .work-block__section {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .work-block__text {
+    max-width: 68ch;
+    color: var(--fg);
+  }
+
+  .work-block__text + .work-block__text {
+    margin-top: var(--space-2);
+  }
+
+  .work-block__highlight {
+    max-width: 56ch;
+    border-left: 3px solid var(--coral);
+    padding: 0.2rem var(--space-3);
+    font-size: var(--text-lg);
+    line-height: var(--leading-tight);
+    margin-block: var(--space-3);
+  }
+
+  .work-block__highlight--indigo {
+    border-color: var(--indigo);
+  }
+
+  .work-block__highlight--neutral {
+    border-color: var(--muted);
+  }
+
+  .work-block__gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 768px) {
+    .work-block__gallery:not(.work-block__gallery--single) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Odd one out: center the trailing image instead of leaving it stranded on the left. */
+    .work-block__gallery:not(.work-block__gallery--single) .work-block__figure:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      width: calc(50% - var(--space-3) / 2);
+      margin-inline: auto;
+    }
+  }
+
+  .work-block__figure {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--coral);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .work-block__figure--indigo {
+    border-top-color: var(--indigo);
+  }
+
+  .work-block__figure--neutral {
+    border-top-color: var(--border);
+  }
+
+  .work-block__figure img {
+    width: 100%;
+    height: auto;
+  }
+
+  .work-block__figure figcaption {
+    padding: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--muted);
+    line-height: var(--leading-normal);
+  }
+</style>

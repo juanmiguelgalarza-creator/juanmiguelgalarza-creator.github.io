@@ -1,0 +1,260 @@
+---
+import '@fontsource/playfair-display-sc/400.css';
+import '@fontsource/dm-sans/300.css';
+import '@fontsource/dm-sans/400.css';
+
+interface Props {
+  locale: 'en' | 'es';
+}
+
+const { locale } = Astro.props;
+
+const strings =
+  locale === 'es'
+    ? {
+        label: 'Sistema de marca',
+        intro:
+          'Paleta neutra y una pareja tipográfica serif editorial + sans geométrica, construidas para sostener el tono "quiet luxury" en cualquier aplicación, desde el sitio hasta futuros materiales impresos.',
+        colorLabel: 'Paleta',
+        typeLabel: 'Tipografía',
+        titlesLabel: 'Títulos — Playfair Display SC',
+        bodyLabel: 'Cuerpo — DM Sans',
+        sample: 'Creamos conexiones con intención y emoción.',
+      }
+    : {
+        label: 'Brand System',
+        intro:
+          'A neutral palette paired with an editorial serif and a geometric sans, built to hold the "quiet luxury" tone across any application, from the website to future print materials.',
+        colorLabel: 'Palette',
+        typeLabel: 'Typography',
+        titlesLabel: 'Titles — Playfair Display SC',
+        bodyLabel: 'Body — DM Sans',
+        sample: 'We create connections with intention and emotion.',
+      };
+
+const palette = [
+  { name: 'Isabelline', hex: '#F9F7F0', fg: '#0B0B0B' },
+  { name: 'Night', hex: '#0B0B0B', fg: '#F9F7F0' },
+  { name: 'Goldenrod', hex: '#DAAB2A', fg: '#0B0B0B' },
+];
+---
+
+<section class="quore-brand container" aria-labelledby="quore-brand-title" data-reveal>
+  <p class="label quore-brand__label" id="quore-brand-title">{strings.label}</p>
+  <p class="quore-brand__intro">{strings.intro}</p>
+
+  <div class="quore-brand__panel">
+    <div class="quore-brand__logos">
+      <div class="quore-brand__logo-card quore-brand__logo-card--light">
+        <img src="/images/quore/brand-manual/logo-wordmark-light.png" alt="Quore Matchmakers logotype" loading="lazy" />
+      </div>
+      <div class="quore-brand__logo-card quore-brand__logo-card--dark">
+        <img
+          src="/images/quore/brand-manual/logo-wordmark-dark.png"
+          alt="Quore Matchmakers logotype on dark"
+          loading="lazy"
+        />
+      </div>
+      <div class="quore-brand__logo-card quore-brand__logo-card--mark">
+        <img src="/images/quore/brand-manual/logo-mark.png" alt="Quore icon mark" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="quore-brand__row">
+      <p class="quore-brand__row-label mono">{strings.colorLabel}</p>
+      <div class="quore-brand__palette">
+        {
+          palette.map((c) => (
+            <div class="quore-brand__swatch" style={`background:${c.hex}; color:${c.fg};`}>
+              <span class="quore-brand__swatch-name">{c.name}</span>
+              <span class="quore-brand__swatch-hex mono">{c.hex}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="quore-brand__row">
+      <p class="quore-brand__row-label mono">{strings.typeLabel}</p>
+      <div class="quore-brand__type">
+        <div class="quore-brand__type-sample">
+          <span class="quore-brand__type-caption mono">{strings.titlesLabel}</span>
+          <p class="quore-brand__type-display">[The Lover]</p>
+        </div>
+        <div class="quore-brand__type-sample">
+          <span class="quore-brand__type-caption mono">{strings.bodyLabel}</span>
+          <p class="quore-brand__type-paragraph">{strings.sample}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .quore-brand {
+    max-width: 68rem;
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+  }
+
+  .quore-brand__label {
+    color: var(--accent);
+    margin-bottom: var(--space-1);
+  }
+
+  .quore-brand__intro {
+    color: var(--muted);
+    max-width: 58ch;
+    margin-bottom: var(--space-4);
+  }
+
+  .quore-brand__panel {
+    border: 1px solid #0b0b0b;
+    background: #f9f7f0;
+  }
+
+  .quore-brand__logos {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-bottom: 1px solid #0b0b0b;
+  }
+
+  @media (min-width: 700px) {
+    .quore-brand__logos {
+      grid-template-columns: 1.3fr 1.3fr 1fr;
+    }
+  }
+
+  .quore-brand__logo-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    border-bottom: 1px solid #0b0b0b;
+  }
+
+  @media (min-width: 700px) {
+    .quore-brand__logo-card {
+      border-bottom: none;
+      border-right: 1px solid #0b0b0b;
+    }
+
+    .quore-brand__logo-card:last-child {
+      border-right: none;
+    }
+  }
+
+  .quore-brand__logo-card--light {
+    background: #f9f7f0;
+  }
+
+  .quore-brand__logo-card--dark {
+    background: #0b0b0b;
+  }
+
+  .quore-brand__logo-card--mark {
+    background: #f9f7f0;
+  }
+
+  .quore-brand__logo-card img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .quore-brand__logo-card--light img,
+  .quore-brand__logo-card--dark img {
+    max-height: 3rem;
+  }
+
+  .quore-brand__logo-card--mark img {
+    max-height: 4rem;
+  }
+
+  .quore-brand__row {
+    padding: var(--space-4);
+    border-bottom: 1px solid #0b0b0b;
+  }
+
+  .quore-brand__row:last-child {
+    border-bottom: none;
+  }
+
+  .quore-brand__row-label {
+    color: #0b0b0b;
+    opacity: 0.55;
+    margin-bottom: var(--space-2);
+  }
+
+  .quore-brand__palette {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #0b0b0b;
+    border: 1px solid #0b0b0b;
+  }
+
+  .quore-brand__swatch {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.2rem;
+    padding: var(--space-2);
+    min-width: 0;
+    min-height: 5.5rem;
+  }
+
+  @media (min-width: 500px) {
+    .quore-brand__swatch {
+      padding: var(--space-3);
+      min-height: 8rem;
+    }
+  }
+
+  .quore-brand__swatch-name {
+    font-family: 'Playfair Display SC', serif;
+    font-size: var(--text-sm);
+  }
+
+  @media (min-width: 500px) {
+    .quore-brand__swatch-name {
+      font-size: var(--text-base);
+    }
+  }
+
+  .quore-brand__swatch-hex {
+    font-size: var(--text-xs);
+    opacity: 0.75;
+  }
+
+  .quore-brand__type-sample + .quore-brand__type-sample {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid rgb(11 11 11 / 14%);
+  }
+
+  .quore-brand__type-caption {
+    display: block;
+    font-size: var(--text-xs);
+    color: #0b0b0b;
+    opacity: 0.55;
+    margin-bottom: 0.4rem;
+  }
+
+  .quore-brand__type-display {
+    font-family: 'Playfair Display SC', serif;
+    font-size: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
+    color: #0b0b0b;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .quore-brand__type-paragraph {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: var(--text-lg);
+    color: #0b0b0b;
+    max-width: 48ch;
+    margin: 0;
+  }
+</style>

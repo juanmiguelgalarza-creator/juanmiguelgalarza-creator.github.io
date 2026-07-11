@@ -1,0 +1,143 @@
+---
+import { t } from '../i18n/ui';
+import type { Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = t(locale);
+const email = 'juanmiguelgalarza@gmail.com';
+const cvHref = locale === 'en' ? '/cv/CV_Juan-Miguel-Galarza_EN.pdf' : '/cv/CV_Juan-Miguel-Galarza_ES.pdf';
+---
+
+<footer class="site-footer tone-navy" id="footer-cv">
+  <div class="container site-footer__inner">
+    <div class="site-footer__lede" data-reveal>
+      <p class="label">{strings.footer_contact_title}</p>
+      <a class="site-footer__cta-big mono" href={`mailto:${email}`}>{strings.footer_contact_cta} →</a>
+      <p class="site-footer__note">
+        {strings.footer_contact_note}
+        <br />
+        <a class="mono site-footer__email" href={`mailto:${email}`}>{email}</a>
+      </p>
+      <p class="site-footer__availability mono">{strings.footer_availability}</p>
+    </div>
+
+    <div class="site-footer__meta">
+      <div class="site-footer__block">
+        <p class="label">{strings.footer_about_title}</p>
+        <p class="site-footer__about">{strings.footer_about}</p>
+      </div>
+
+      <div class="site-footer__block">
+        <p class="label">{strings.footer_cv_title}</p>
+        <a class="site-footer__cv-link mono" href={cvHref} download>{strings.footer_cv_cta} →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <span class="mono">© {new Date().getFullYear()} Juan Miguel Galarza. {strings.footer_rights}</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-8);
+    transition: background-color var(--duration-base) var(--ease-out);
+  }
+
+  .site-footer__inner {
+    padding-block: var(--space-7) var(--space-6);
+  }
+
+  .site-footer__lede {
+    margin-bottom: var(--space-6);
+    max-width: 40rem;
+  }
+
+  .site-footer__lede .label {
+    color: var(--accent);
+    margin-bottom: var(--space-2);
+  }
+
+  .site-footer__cta-big {
+    display: block;
+    text-decoration: none;
+    color: var(--heading);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .site-footer__cta-big:hover {
+    opacity: 0.8;
+  }
+
+  .site-footer__note {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    margin-top: var(--space-3);
+  }
+
+  .site-footer__email {
+    text-decoration: none;
+    color: var(--fg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .site-footer__availability {
+    font-size: var(--text-xs);
+    color: var(--accent);
+    margin-top: var(--space-2);
+  }
+
+  .site-footer__meta {
+    display: grid;
+    gap: var(--space-5);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__meta {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+
+  .site-footer__block .label {
+    color: var(--accent);
+    margin-bottom: var(--space-1);
+  }
+
+  .site-footer__about {
+    color: var(--muted);
+    font-size: var(--text-sm);
+    max-width: 46ch;
+  }
+
+  .site-footer__cv-link {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--heading);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent);
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .site-footer__cv-link:hover {
+    opacity: 0.8;
+  }
+
+  .site-footer__bottom {
+    padding-block: var(--space-2);
+    border-top: 1px solid var(--border);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+</style>

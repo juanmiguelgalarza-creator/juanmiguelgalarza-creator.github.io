@@ -1,0 +1,272 @@
+/* ---------- Design tokens ---------- */
+:root {
+  /* Raw palette (brief-fixed, never remapped) */
+  --cream: #f7f4ec;
+  --navy: #1e2b3c;
+  --navy-raised: #26374b;
+  --coral: #e8734a;
+  --indigo: #4f3feb;
+
+  /* Semantic — light mode (default) */
+  --bg: var(--cream);
+  --surface: #ffffff;
+  --fg: var(--navy);
+  --muted: rgb(30 43 60 / 65%);
+  --heading: var(--indigo);
+  --link: var(--indigo);
+  --accent: var(--coral);
+  --border: rgb(30 43 60 / 14%);
+  --focus-ring: var(--coral);
+
+  /* Typography */
+  --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 1rem + 1vw, 1.625rem);
+  --text-2xl: clamp(1.75rem, 1.2rem + 2.5vw, 2.75rem);
+  --text-3xl: clamp(2.25rem, 1.4rem + 4vw, 4rem);
+  --text-4xl: clamp(2.75rem, 1.5rem + 6vw, 5.5rem);
+  --text-index: clamp(5.5rem, 3rem + 11vw, 13rem);
+  --text-index-sm: clamp(3.25rem, 2rem + 5vw, 6rem);
+
+  --leading-tight: 1.1;
+  --leading-normal: 1.6;
+
+  /* Spacing (8px base) */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+  --space-8: 8rem;
+
+  /* Layout */
+  --container-max: 78rem;
+  --gutter: var(--space-3);
+  --radius: 2px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 180ms;
+  --duration-base: 300ms;
+  --duration-enter: 400ms;
+  --stagger: 70ms;
+}
+
+:root[data-theme='dark'] {
+  --bg: var(--navy);
+  --surface: var(--navy-raised);
+  --fg: var(--cream);
+  --muted: rgb(247 244 236 / 68%);
+  --heading: var(--cream);
+  --link: var(--coral);
+  --accent: var(--coral);
+  --border: rgb(247 244 236 / 16%);
+  --focus-ring: var(--coral);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: var(--navy);
+    --surface: var(--navy-raised);
+    --fg: var(--cream);
+    --muted: rgb(247 244 236 / 68%);
+    --heading: var(--cream);
+    --link: var(--coral);
+    --accent: var(--coral);
+    --border: rgb(247 244 236 / 16%);
+  }
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  transition: background-color var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-mono);
+  color: var(--heading);
+  line-height: var(--leading-tight);
+  margin: 0;
+  font-weight: 700;
+}
+
+p {
+  margin: 0 0 var(--space-2);
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------- Utilities ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: var(--space-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: var(--space-5);
+  }
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Section tones (fixed color blocks, independent of light/dark theme) ---------- */
+/* Bauhaus: color identifies content, so a tone block reads the same regardless of the toggle. */
+.tone-navy {
+  background: var(--navy);
+  color: var(--cream);
+  --fg: var(--cream);
+  --heading: var(--cream);
+  --muted: rgb(247 244 236 / 68%);
+  --border: rgb(247 244 236 / 18%);
+  --accent: var(--coral);
+}
+
+.tone-coral {
+  background: var(--coral);
+  color: var(--navy);
+  --fg: var(--navy);
+  --heading: var(--navy);
+  --muted: rgb(30 43 60 / 70%);
+  --border: rgb(30 43 60 / 20%);
+  --accent: var(--navy);
+}
+
+.tone-indigo {
+  background: var(--indigo);
+  color: var(--cream);
+  --fg: var(--cream);
+  --heading: var(--cream);
+  --muted: rgb(247 244 236 / 70%);
+  --border: rgb(247 244 236 / 20%);
+  --accent: var(--coral);
+}
+
+.tone-cream {
+  background: var(--cream);
+  color: var(--navy);
+  --fg: var(--navy);
+  --heading: var(--navy);
+  --muted: rgb(30 43 60 / 65%);
+  --border: rgb(30 43 60 / 14%);
+  --accent: var(--coral);
+}
+
+/* ---------- Cursor + hover + focus, per accessibility checklist ---------- */
+a,
+button,
+[role='button'] {
+  cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* ---------- Scroll reveal (progressive enhancement, off until .js is present) ---------- */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(6px);
+  transition:
+    opacity var(--duration-enter) var(--ease-out),
+    transform var(--duration-enter) var(--ease-out),
+    filter var(--duration-enter) var(--ease-out);
+  transition-delay: calc(var(--reveal-index, 0) * var(--stagger));
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,169 @@
+---
+interface Props {
+  href: string;
+  initials: string;
+  category: string;
+  title: string;
+  thesis: string;
+  index: number;
+}
+
+const { href, initials, category, title, thesis, index } = Astro.props;
+const tone = index % 2 === 0 ? 'coral' : 'indigo';
+---
+
+<a class={`other-work-item other-work-item--${tone}`} href={href}>
+  <span class="other-work-item__index" aria-hidden="true">{initials}</span>
+  <span class="other-work-item__body">
+    <span class="label other-work-item__category">{category}</span>
+    <span class="other-work-item__title">{title}</span>
+    <span class="other-work-item__thesis">{thesis}</span>
+  </span>
+  <span class="other-work-item__arrow" aria-hidden="true">→</span>
+</a>
+
+<style>
+  .other-work-item {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+    padding-inline: var(--space-2);
+    margin-inline: calc(var(--space-2) * -1);
+    text-decoration: none;
+    color: var(--fg);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .other-work-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .other-work-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-base) var(--ease-out);
+    z-index: -1;
+  }
+
+  .other-work-item--coral::before {
+    background: var(--coral);
+  }
+
+  .other-work-item--indigo::before {
+    background: var(--indigo);
+  }
+
+  .other-work-item:hover::before,
+  .other-work-item:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .other-work-item:hover .other-work-item__arrow,
+  .other-work-item:focus-visible .other-work-item__arrow {
+    transform: translateX(4px);
+  }
+
+  .other-work-item--coral:hover .other-work-item__index,
+  .other-work-item--coral:hover .other-work-item__category,
+  .other-work-item--coral:hover .other-work-item__title,
+  .other-work-item--coral:hover .other-work-item__arrow,
+  .other-work-item--coral:focus-visible .other-work-item__index,
+  .other-work-item--coral:focus-visible .other-work-item__category,
+  .other-work-item--coral:focus-visible .other-work-item__title,
+  .other-work-item--coral:focus-visible .other-work-item__arrow {
+    color: var(--navy);
+  }
+
+  .other-work-item--coral:hover .other-work-item__thesis,
+  .other-work-item--coral:focus-visible .other-work-item__thesis {
+    color: rgb(30 43 60 / 75%);
+  }
+
+  .other-work-item--indigo:hover .other-work-item__index,
+  .other-work-item--indigo:hover .other-work-item__category,
+  .other-work-item--indigo:hover .other-work-item__title,
+  .other-work-item--indigo:hover .other-work-item__arrow,
+  .other-work-item--indigo:focus-visible .other-work-item__index,
+  .other-work-item--indigo:focus-visible .other-work-item__category,
+  .other-work-item--indigo:focus-visible .other-work-item__title,
+  .other-work-item--indigo:focus-visible .other-work-item__arrow {
+    color: var(--cream);
+  }
+
+  .other-work-item--indigo:hover .other-work-item__thesis,
+  .other-work-item--indigo:focus-visible .other-work-item__thesis {
+    color: rgb(247 244 236 / 78%);
+  }
+
+  .other-work-item--coral .other-work-item__index {
+    color: var(--coral);
+  }
+
+  .other-work-item--indigo .other-work-item__index {
+    color: var(--indigo);
+  }
+
+  .other-work-item__index {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-index-sm);
+    line-height: 0.85;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .other-work-item__body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .other-work-item__category {
+    color: var(--accent);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .other-work-item__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--heading);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .other-work-item__thesis {
+    color: var(--muted);
+    font-size: var(--text-sm);
+    max-width: 60ch;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .other-work-item__arrow {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    color: var(--accent);
+    transition: transform var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .other-work-item__arrow {
+      display: block;
+    }
+  }
+</style>
