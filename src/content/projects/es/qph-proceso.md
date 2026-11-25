@@ -9,6 +9,7 @@ dates: "Oct 2025 – Presente"
 work: []
 result: "Este proceso convierte ideas de negocio ambiguas en documentación de diseño estructurada y lista para decisión, dando a cada business owner un espacio real de co-creación en vez de una evaluación unilateral. El mismo criterio que aplico aquí (traducir ambigüedad en claridad, sin perder de vista a quién sirve la decisión) es el hilo que conecta esta pieza con Lexis, Heka y Quore."
 lesson: "Evaluar una idea no es lo mismo que juzgarla. El trabajo más útil que puedo hacer como diseñador en esta etapa es construir, junto a la persona que tiene la idea, la claridad suficiente para que la decisión (avanzar o no) se tome con criterio real, no con intuición ni con qué tan bien se vendió la idea en una sala."
+nextSlug: quore
 ---
 
 ## Contexto

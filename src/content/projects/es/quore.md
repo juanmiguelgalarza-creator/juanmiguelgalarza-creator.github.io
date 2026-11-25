@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 5
 slug: quore
 category: Marca y Web
 title: Quore
@@ -23,7 +23,6 @@ work:
     text: "\"[The Lover]. Creamos conexiones con intención y emoción.\" El arquetipo no es decoración de manual de marca: es el filtro que descartó cada opción de diseño que sonara a app de citas."
 result: "Aunque el servicio sigue en fase de pre-lanzamiento, Quore ya tiene una identidad de marca a la altura de su ambición. El proyecto tomó un concepto abstracto (matchmaking de lujo) y lo convirtió en una experiencia clara y aspiracional que equilibra confianza, intimidad y sofisticación. Para una marca completamente nueva, sin reputación previa, esto sentó las bases de credibilidad y deseo antes de que exista un solo usuario que lo confirme."
 lesson: "Cuando no hay producto ni usuarios que validen una idea, la marca no es decoración: es la única evidencia que tiene la gente para decidir si confiar. Diseñar Quore significó tratar cada palabra y cada decisión visual como parte de esa evidencia, no como estética separada de la estrategia."
-nextSlug: qph-proceso
 ---
 
 ## Contexto

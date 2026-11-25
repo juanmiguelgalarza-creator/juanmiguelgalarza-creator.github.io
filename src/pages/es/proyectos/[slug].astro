@@ -19,14 +19,10 @@ const nextEntry = entry.data.nextSlug
 ---
 
 <CaseStudyLayout locale="es" entry={entry} nextTitle={nextEntry?.data.title}>
-  {entry.data.slug === 'lexis' && (
-    <Fragment slot="interactive">
-      <LexisDemo locale="es" />
-    </Fragment>
-  )}
-  {entry.data.slug === 'quore' && (
-    <Fragment slot="interactive">
-      <QuoreBrandSystem locale="es" />
-    </Fragment>
-  )}
+  {/* One slot target only: in production builds a second conditional
+      Fragment for the same slot overwrites the first, even when false. */}
+  <Fragment slot="interactive">
+    {entry.data.slug === 'lexis' && <LexisDemo locale="es" />}
+    {entry.data.slug === 'quore' && <QuoreBrandSystem locale="es" />}
+  </Fragment>
 </CaseStudyLayout>

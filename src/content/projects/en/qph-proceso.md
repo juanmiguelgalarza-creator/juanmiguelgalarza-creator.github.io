@@ -9,6 +9,7 @@ dates: "Oct 2025 – Present"
 work: []
 result: "This process turns ambiguous business ideas into structured, decision-ready design documentation, giving each business owner real co-creation instead of a one-sided evaluation. The same judgment applied here (turning ambiguity into clarity, without losing sight of who the decision serves) is the thread that connects this piece to Lexis, Heka, and Quore."
 lesson: "Evaluating an idea isn't the same as judging it. The most useful thing I can do as a designer at this stage is build, alongside the person who owns the idea, enough clarity for the decision (move forward or not) to be made on real judgment, not intuition or how well the idea was pitched in a room."
+nextSlug: quore
 ---
 
 ## Context

@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 3
 slug: heka
 category: LegalTech
 title: Heka
@@ -24,7 +24,7 @@ work:
         caption: "The advisor introduces themselves by name before responding. That one simple detail (a name, not a generic support icon) is what turns the chat into a real conversation, not a bot with a different label."
 result: "No metrics available for this project (it was a short, remote engagement). Heka came away with a visual identity that finally communicated what the service promised, and a decision pattern (AI or human) that doesn't force the user to choose between speed and trust. That same pattern, validated here in a high-pressure context, went on to shape how I approached AI-to-user relationships in later projects."
 lesson: "Not every product decision needs to pick a side. Sometimes the better solution is letting the user's context decide, and designing both paths with equal care."
-nextSlug: quore
+nextSlug: qph-proceso
 ---
 
 ## Context

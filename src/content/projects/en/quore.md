@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 5
 slug: quore
 category: Brand & Web
 title: Quore
@@ -23,7 +23,6 @@ work:
     text: "\"[The Lover]. We create connections with intention and emotion.\" The archetype isn't brand-manual decoration, it's the filter that ruled out every design option that read as a dating app."
 result: "Though the service is still pre-launch, Quore already has a brand identity that matches its ambition. The project took an abstract concept (luxury matchmaking) and turned it into a clear, aspirational experience that balances trust, intimacy, and sophistication. For a brand with no prior reputation, this laid the foundation of credibility and desire before a single user could confirm it."
 lesson: "When there's no product or user base to validate an idea, the brand isn't decoration, it's the only evidence people have to decide whether to trust it. Designing Quore meant treating every word and visual decision as part of that evidence, not as aesthetics separate from strategy."
-nextSlug: qph-proceso
 ---
 
 ## Context
