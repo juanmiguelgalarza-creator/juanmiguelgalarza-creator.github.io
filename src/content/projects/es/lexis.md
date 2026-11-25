@@ -2,8 +2,8 @@
 order: 1
 slug: lexis
 category: LegalTech
-title: Lexis
-thesis: "Diseñar una IA legal en la que los abogados pudieran confiar, no solo usar."
+title: Lexis App
+thesis: "Diseñar una app de IA legal en la que los abogados pudieran confiar, no solo usar."
 role: "Product Designer, UX/UI"
 dates: "Oct 2024 – Abr 2025"
 scope: "App"
